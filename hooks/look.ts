@@ -67,9 +67,10 @@ export const allProblems = (): string[] => SCHEME_KEYS.flatMap(k => THEMES[k].pr
 
 export const lookFor = (s: DeskSettings): ThemeSetArgs => ({
   colors: THEMES[s.scheme].theme,
-  // Every wallpaper is a live scene drawn by the mod. The glass is only a light
-  // veil: at a high opacity it hides the scene behind a solid color.
-  backdrop: { scene: 'desktop98', glass: { blur: 1, opacity: 0.25 } },
+  // Every wallpaper is a live scene drawn by the mod. The glass takes the app's
+  // own panel color (dark in dark mode): thick enough, and frosted, that text
+  // reads over the bright sky, thin enough that the meadow still shows.
+  backdrop: { scene: 'desktop98', glass: { blur: 6, opacity: 0.5 } },
 })
 
 // ---------- the desktop scene: original pixel-art icons and a taskbar ----------

@@ -36,6 +36,22 @@ const WHITE = '#ffffff'
 const INK = '#000000'
 const NAVY = '#000080'
 
+// A Win98 push button drawn by the mod: black text on silver, navy when
+// active. The app's own button styles go pale in dark mode on these boxes.
+type WinButtonArgs = { id: string; label: string; isActive?: boolean; onPress: () => unknown }
+const winButton = (ui: ReturnType<EngineInterface['ui']['resolve']>, a: WinButtonArgs) => {
+  const { Box, Text, Button } = ui
+  return (
+    <Box key={a.id} backgroundColor={a.isActive ? NAVY : SILVER} borderStyle="single" borderColor={a.isActive ? NAVY : SHADOW} paddingX={1}>
+      <Button key={`${a.id}-b`} plain label={a.label} onPress={a.onPress}>
+        <Text color={a.isActive ? WHITE : INK} weight={a.isActive ? 'bold' : undefined}>
+          {a.label}
+        </Text>
+      </Button>
+    </Box>
+  )
+}
+
 const sanitize = (raw: unknown): DeskSettings => {
   const v = (raw ?? {}) as Partial<DeskSettings>
   const schemes: DeskScheme[] = ['standard', 'rose', 'slate', 'eggplant']
@@ -233,24 +249,21 @@ export const register: Register = on => {
       ...[...counts.entries()].sort((a, b) => b[1] - a[1]).map(([tool, n]) => `${tool}: ${n}`),
     ].join('\n')
     const menuButton = (key: DeskMenu, label: string) => (
-      <Button
-        key={`menu-${key}`}
-        label={label}
-        variant={menu === key ? 'primary' : 'secondary'}
-        onPress={() => update($, monitorMenu, cur => (cur === key ? null : key))}
-      />
+      winButton(ui, { id: `menu-${key}`, label: label, isActive: menu === key, onPress: () => update($, monitorMenu, cur => (cur === key ? null : key)) })
     )
     // A menu item runs its action, then closes the menu (a toggle keeps it open).
     const item = (key: string, label: string, run: (press: { surface: typeof e.surface }) => unknown, keepOpen = false) => (
       <Button
         key={key}
-        variant="secondary"
+        plain
         label={label}
         onPress={async press => {
           if (!keepOpen) await update($, monitorMenu, () => null)
           await run(press)
         }}
-      />
+      >
+        <Text color={INK}>{label}</Text>
+      </Button>
     )
 
     return (
@@ -269,7 +282,7 @@ export const register: Register = on => {
           {menuButton('edit', 'Edit')}
           {menuButton('view', 'View')}
           <Box flexGrow={1} />
-          <Button key="mon-clear" variant="secondary" label="Clear" onPress={() => update($, calls, () => [])} />
+          {winButton(ui, { id: "mon-clear", label: "Clear", onPress: () => update($, calls, () => []) })}
         </Box>
         {menu !== null && (
           <Box flexDirection="column" marginX={1} padding={1} backgroundColor={WHITE} borderStyle="single" borderColor={INK} gap="xs">
@@ -356,10 +369,12 @@ export const register: Register = on => {
 
     const setDraft = (patch: Partial<DeskSettings>) => update($, draft, cur => ({ ...(cur ?? saved), ...patch }))
     const tabButton = (key: DeskTab, label: string) => (
-      <Button key={`tab-${key}`} label={label} variant={t === key ? 'primary' : 'secondary'} onPress={() => update($, tab, () => key)} />
+      winButton(ui, { id: `tab-${key}`, label: label, isActive: t === key, onPress: () => update($, tab, () => key) })
     )
     const check = (key: string, label: string, value: boolean, patch: (v: boolean) => Partial<DeskSettings>) => (
-      <Button key={key} variant="secondary" label={`${value ? '[x]' : '[ ]'} ${label}`} onPress={() => setDraft(patch(!value))} />
+      <Button key={key} plain label={`${value ? '[x]' : '[ ]'} ${label}`} onPress={() => setDraft(patch(!value))}>
+        <Text color={INK}>{`${value ? '[x]' : '[ ]'} ${label}`}</Text>
+      </Button>
     )
 
     const body =

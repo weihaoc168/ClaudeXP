@@ -49,7 +49,7 @@ Answer `y` to add the marketplace and pick the **user** scope, and every new ses
 | ▬ **Taskbar** | Start button, quick-launch tray, a Claude Code task and a clock-tray that blinks `Ready_`. |
 | 🟦 **Start band** | `Start`, `System Monitor` and `Display` buttons right above the prompt. The Start menu opens every window. |
 | 📊 **System Monitor** | A Win98-style window beside the chat counting each tool call, with usage bars, a scrolling call log and `[ok]` / `[!!]` results. Working **File / Edit / View** menus: clear the log, copy a summary, hide the bars or the log. |
-| 🎨 **Color schemes** | Standard, Rose, Slate and Eggplant: silver chrome with black text, in light and dark mode alike. |
+| 🎨 **Color schemes** | Standard, Rose, Slate and Eggplant in light mode, and a shared "After Hours" scheme in dark mode. |
 | 💾 **Remembers you** | Your wallpaper, scheme and effects are kept across sessions. |
 
 ## ⌨️ Commands

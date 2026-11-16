@@ -3,8 +3,8 @@ import type { ThemeSetArgs } from 'claude-code'
 import type { DeskScheme, DeskSettings, DeskWallpaper } from '../types'
 import { makeColors } from './make-colors.js'
 
-// Classic late-90s desktop color schemes: silver chrome and black text,
-// used in both of the app's modes.
+// Classic late-90s desktop color schemes. Light mode is the silver-chrome
+// scheme; dark mode is a shared "after hours" scheme, a CRT left on at night.
 const SCHEMES: Record<DeskScheme, { label: string; accent: string; s0: string; s1: string; s2: string }> = {
   standard: { label: 'Standard', accent: '#000080', s0: '#c0c0c0', s1: '#d4d0c8', s2: '#f2f1ec' },
   rose: { label: 'Rose', accent: '#800040', s0: '#cfb4b4', s1: '#ddc7c6', s2: '#f3e9e8' },
@@ -38,9 +38,20 @@ const build = (key: DeskScheme) => {
         stops: { 250: '#2f4fc8', 300: '#2343b8', 350: '#1733a6', 450: '#081a78', 500: '#06156a' },
       },
     },
-    // Light only: the app then draws the silver scheme, black text and all,
-    // whatever mode the person's app is in.
-    only: 'light',
+    dark: {
+      roles: { accent: '#5f7fff' },
+      gray: {
+        anchors: {
+          'surface-0': '#0e0f18',
+          'surface-1': '#171826',
+          'surface-2': '#1e2032',
+          'surface-3': '#24263a',
+          'text-primary': '#f2f2f2',
+          'text-secondary': '#cfcfd6',
+          'text-muted': '#a6a7b4',
+        },
+      },
+    },
   })
 }
 
@@ -56,7 +67,6 @@ export const allProblems = (): string[] => SCHEME_KEYS.flatMap(k => THEMES[k].pr
 
 export const lookFor = (s: DeskSettings): ThemeSetArgs => ({
   colors: THEMES[s.scheme].theme,
-  overrideColorScheme: 'light',
   // Every wallpaper is a live scene drawn by the mod. The glass is only a light
   // veil: at a high opacity it hides the scene behind a solid color.
   backdrop: { scene: 'desktop98', glass: { blur: 1, opacity: 0.25 } },

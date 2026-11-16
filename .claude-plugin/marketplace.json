@@ -1,5 +1,5 @@
 {
-  "name": "claude98",
+  "name": "claudexp",
   "owner": { "name": "weihaoc168" },
-  "plugins": [{ "name": "claude98", "source": "./" }]
+  "plugins": [{ "name": "claudexp", "source": "./" }]
 }

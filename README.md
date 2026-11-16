@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/banner.jpg" alt="Claude 98: a green meadow desktop with icons, a taskbar and a Setup window" width="900">
+  <img src="assets/banner.jpg" alt="ClaudeXp: a green meadow desktop with icons, a taskbar and a Setup window" width="900">
 </p>
 
-<h1 align="center">🖥️ Claude 98</h1>
+<h1 align="center">🖥️ ClaudeXp</h1>
 
 <p align="center">
   <strong>IT'S NOT A BUG, IT'S A FEATURE OF 1998! 💾</strong>
@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/chrome-silver%20%23c0c0c0-c0c0c0?style=for-the-badge" alt="Silver chrome">
 </p>
 
-**Claude 98** is a mod that dresses Claude Code like a late-90s desktop: silver beveled chrome, a rolling green meadow behind the chat, desktop icons, a taskbar with a blinking `Ready_`, a Start band above the prompt, a live **System Monitor** window and a proper **Display Properties** dialog.
+**ClaudeXp** is a mod that dresses Claude Code like a late-90s desktop: silver beveled chrome, a rolling green meadow behind the chat, desktop icons, a taskbar with a blinking `Ready_`, a Start band above the prompt, a live **System Monitor** window and a proper **Display Properties** dialog.
 
 Everything is drawn by the mod itself: original pixel icons, an original meadow, no copied wallpapers.
 
@@ -27,16 +27,16 @@ Everything is drawn by the mod itself: original pixel icons, an original meadow,
 At the prompt of a terminal session:
 
 ```
-/plugin install claude98 --marketplace weihaoc168/Claude98
+/plugin install claudexp --marketplace weihaoc168/ClaudeXp
 ```
 
 From a shell:
 
 ```bash
-claude plugin install claude98 --marketplace weihaoc168/Claude98
+claude plugin install claudexp --marketplace weihaoc168/ClaudeXp
 ```
 
-In the desktop app: click **+** next to the prompt box → **Plugins** → **Add marketplace** with `weihaoc168/Claude98` → **Add plugin**.
+In the desktop app: click **+** next to the prompt box → **Plugins** → **Add marketplace** with `weihaoc168/ClaudeXp` → **Add plugin**.
 
 Answer `y` to add the marketplace and pick the **user** scope, and every new session boots into 1998.
 
@@ -75,8 +75,8 @@ Three tabs, OK / Cancel / Apply, just like you remember:
 
 **I can't see the icons.** They sit at the window's left edge, under the sidebar. Collapse the sidebar to see them.
 
-**How do I remove it?** `claude plugin uninstall claude98`.
+**How do I remove it?** `claude plugin uninstall claudexp`.
 
 ---
 
-<p align="center"><sub>Not affiliated with or endorsed by Microsoft. Claude 98 is an original tribute; all art is drawn from scratch.</sub></p>
+<p align="center"><sub>Not affiliated with or endorsed by Microsoft. ClaudeXp is an original tribute; all art is drawn from scratch.</sub></p>

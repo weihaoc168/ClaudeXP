@@ -21,13 +21,13 @@ const STORE_KEY = 'settings-v2'
 
 const DEFAULTS: DeskSettings = { scheme: 'standard', wallpaper: 'meadow', zoom: '65', icons: true, taskbar: true, startup: true }
 
-const settings = atom({ plugin: 'claude98', key: 'settings' } as const, DEFAULTS, { shape: 'settings-3' })
-const draft = atom({ plugin: 'claude98', key: 'draft' } as const, null, { shape: 'draft-3' })
-const tab = atom({ plugin: 'claude98', key: 'tab' } as const, 'background' as DeskTab)
-const calls = atom({ plugin: 'claude98', key: 'calls' } as const, [], { shape: 'calls-1' })
-const isStartOpen = atom({ plugin: 'claude98', key: 'isStartOpen' } as const, false)
-const monitorMenu = atom({ plugin: 'claude98', key: 'monitorMenu' } as const, null as DeskMenu | null)
-const monitorView = atom({ plugin: 'claude98', key: 'monitorView' } as const, { bars: true, log: true } as DeskMonitorView, { shape: 'view-1' })
+const settings = atom({ plugin: 'claudexp', key: 'settings' } as const, DEFAULTS, { shape: 'settings-3' })
+const draft = atom({ plugin: 'claudexp', key: 'draft' } as const, null, { shape: 'draft-3' })
+const tab = atom({ plugin: 'claudexp', key: 'tab' } as const, 'background' as DeskTab)
+const calls = atom({ plugin: 'claudexp', key: 'calls' } as const, [], { shape: 'calls-1' })
+const isStartOpen = atom({ plugin: 'claudexp', key: 'isStartOpen' } as const, false)
+const monitorMenu = atom({ plugin: 'claudexp', key: 'monitorMenu' } as const, null as DeskMenu | null)
+const monitorView = atom({ plugin: 'claudexp', key: 'monitorView' } as const, { bars: true, log: true } as DeskMonitorView, { shape: 'view-1' })
 
 // Classic window chrome colors, fixed so the windows read the same in both modes.
 const SILVER = '#c0c0c0'
@@ -72,10 +72,10 @@ const sanitize = (raw: unknown): DeskSettings => {
 const applyLook = async ($: EngineInterface, s: DeskSettings): Promise<void> => {
   const unpainted = blockingProblem(s.scheme)
   if (unpainted !== undefined) {
-    $.ui.toast(`Claude 98: ${unpainted}`)
+    $.ui.toast(`ClaudeXp: ${unpainted}`)
   }
   const set = await $.theme.set(lookFor(s))
-  $.ui.status(set.isDrawn ? `Claude 98 - Ready (${s.wallpaper})` : `Claude 98: ${set.reason}`)
+  $.ui.status(set.isDrawn ? `ClaudeXp - Ready (${s.wallpaper})` : `ClaudeXp: ${set.reason}`)
 }
 
 const commit = async ($: EngineInterface, s: DeskSettings): Promise<void> => {
@@ -103,10 +103,10 @@ export const register: Register = on => {
     await update($, settings, () => stored)
     await applyLook($, stored)
 
-    await $.command.register({ name: 'display', description: 'Claude 98: open Display Properties (wallpaper, color scheme, effects)' })
-    await $.command.register({ name: 'sysmon', description: 'Claude 98: open the System Monitor window' })
-    await $.command.register({ name: 'startmenu', description: 'Claude 98: toggle the Start menu above the prompt' })
-    await $.command.register({ name: 'win98-check', description: 'Claude 98: show which screens this session draws on and whether the theme reached them' })
+    await $.command.register({ name: 'display', description: 'ClaudeXp: open Display Properties (wallpaper, color scheme, effects)' })
+    await $.command.register({ name: 'sysmon', description: 'ClaudeXp: open the System Monitor window' })
+    await $.command.register({ name: 'startmenu', description: 'ClaudeXp: toggle the Start menu above the prompt' })
+    await $.command.register({ name: 'win98-check', description: 'ClaudeXp: show which screens this session draws on and whether the theme reached them' })
 
     if (stored.startup) {
       void openMonitor($)
@@ -174,7 +174,7 @@ export const register: Register = on => {
     const { Svg } = ui
     const s = await read($, settings)
     lastBackdrop = e.surface
-    $.ui.status(`Claude 98 - Ready (${s.wallpaper}, scene drawn on ${e.surface})`)
+    $.ui.status(`ClaudeXp - Ready (${s.wallpaper}, scene drawn on ${e.surface})`)
     return <Svg source={sceneSvg(s)} alt="A retro desktop with pixel icons and a taskbar" isInteractive />
   })
 
@@ -213,7 +213,7 @@ export const register: Register = on => {
           <Box flexDirection="row" borderStyle="single" borderColor={INK} backgroundColor={SILVER}>
             <Box backgroundColor={accentOf(s.scheme)} paddingX={1} justifyContent="flex-end">
               <Text color={WHITE} weight="bold">
-                Claude98
+                ClaudeXp
               </Text>
             </Box>
             <Box flexDirection="column" paddingY={1} flexGrow={1}>
@@ -258,7 +258,7 @@ export const register: Register = on => {
     const menu = await read($, monitorMenu)
     const view = await read($, monitorView)
     const summary = [
-      `Claude 98 System Monitor: ${list.length} calls, ${running} running, ${failed} errors`,
+      `ClaudeXp System Monitor: ${list.length} calls, ${running} running, ${failed} errors`,
       ...[...counts.entries()].sort((a, b) => b[1] - a[1]).map(([tool, n]) => `${tool}: ${n}`),
     ].join('\n')
     const menuButton = (key: DeskMenu, label: string) => (

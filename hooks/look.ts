@@ -21,7 +21,7 @@ export const chromeOf = (scheme: DeskScheme): string => SCHEMES[scheme].s1
 const build = (key: DeskScheme) => {
   const s = SCHEMES[key]
   return makeColors({
-    label: `Claude 98 - ${s.label}`,
+    label: `ClaudeXp - ${s.label}`,
     roles: { accent: s.accent, danger: '#b00000', success: '#007a00', warning: '#a87800', pro: '#800080' },
     light: {
       gray: {

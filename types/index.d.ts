@@ -9,7 +9,7 @@ export type DeskTab = 'background' | 'appearance' | 'effects'
 
 declare module 'claude-code' {
   interface PluginState {
-    claude98: {
+    claudexp: {
       settings: Shaped<DeskSettings>
       draft: Shaped<DeskSettings | null>
       tab: DeskTab

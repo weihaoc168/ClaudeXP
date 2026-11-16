@@ -1,7 +1,7 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type { DeskCall, DeskScheme, DeskSettings, DeskTab, DeskWallpaper, DeskZoom } from '../types'
+import type { DeskCall, DeskMenu, DeskMonitorView, DeskScheme, DeskSettings, DeskTab, DeskWallpaper, DeskZoom } from '../types'
 import {
   SCHEME_OPTIONS,
   WALLPAPERS,
@@ -26,6 +26,8 @@ const draft = atom({ plugin: 'claude98', key: 'draft' } as const, null, { shape:
 const tab = atom({ plugin: 'claude98', key: 'tab' } as const, 'background' as DeskTab)
 const calls = atom({ plugin: 'claude98', key: 'calls' } as const, [], { shape: 'calls-1' })
 const isStartOpen = atom({ plugin: 'claude98', key: 'isStartOpen' } as const, false)
+const monitorMenu = atom({ plugin: 'claude98', key: 'monitorMenu' } as const, null as DeskMenu | null)
+const monitorView = atom({ plugin: 'claude98', key: 'monitorView' } as const, { bars: true, log: true } as DeskMonitorView, { shape: 'view-1' })
 
 // Classic window chrome colors, fixed so the windows read the same in both modes.
 const SILVER = '#c0c0c0'
@@ -224,6 +226,32 @@ export const register: Register = on => {
     for (const c of list) counts.set(c.tool, (counts.get(c.tool) ?? 0) + 1)
     const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)
     const max = top[0]?.[1] ?? 1
+    const menu = await read($, monitorMenu)
+    const view = await read($, monitorView)
+    const summary = [
+      `Claude 98 System Monitor: ${list.length} calls, ${running} running, ${failed} errors`,
+      ...[...counts.entries()].sort((a, b) => b[1] - a[1]).map(([tool, n]) => `${tool}: ${n}`),
+    ].join('\n')
+    const menuButton = (key: DeskMenu, label: string) => (
+      <Button
+        key={`menu-${key}`}
+        label={label}
+        variant={menu === key ? 'primary' : 'secondary'}
+        onPress={() => update($, monitorMenu, cur => (cur === key ? null : key))}
+      />
+    )
+    // A menu item runs its action, then closes the menu (a toggle keeps it open).
+    const item = (key: string, label: string, run: (press: { surface: typeof e.surface }) => unknown, keepOpen = false) => (
+      <Button
+        key={key}
+        variant="secondary"
+        label={label}
+        onPress={async press => {
+          if (!keepOpen) await update($, monitorMenu, () => null)
+          await run(press)
+        }}
+      />
+    )
 
     return (
       <Box flexDirection="column" borderStyle="single" borderColor={INK} backgroundColor={SILVER}>
@@ -236,16 +264,33 @@ export const register: Register = on => {
           </Box>
           <Button key="mon-close" plain label="✕" onPress={() => $.ui.close({ id: MONITOR })} />
         </Box>
-        <Box flexDirection="row" paddingX={1} gap={2}>
-          <Text color={INK} underline>F</Text>
-          <Text color={INK}>ile</Text>
-          <Text color={INK} underline>E</Text>
-          <Text color={INK}>dit</Text>
-          <Text color={INK} underline>V</Text>
-          <Text color={INK}>iew</Text>
+        <Box flexDirection="row" paddingX={1} gap={1} alignItems="center">
+          {menuButton('file', 'File')}
+          {menuButton('edit', 'Edit')}
+          {menuButton('view', 'View')}
           <Box flexGrow={1} />
           <Button key="mon-clear" variant="secondary" label="Clear" onPress={() => update($, calls, () => [])} />
         </Box>
+        {menu !== null && (
+          <Box flexDirection="column" marginX={1} padding={1} backgroundColor={WHITE} borderStyle="single" borderColor={INK} gap="xs">
+            {menu === 'file' && [
+              item('m-clear', 'Clear log', () => update($, calls, () => [])),
+              item('m-close', 'Close', () => $.ui.close({ id: MONITOR })),
+            ]}
+            {menu === 'edit' && [
+              item('m-copy', 'Copy summary', async press => {
+                const r = await $.ui.copy({ text: summary, surface: press.surface })
+                $.ui.toast(r.isCopied ? 'System Monitor summary copied.' : 'Could not copy the summary.')
+              }),
+            ]}
+            {menu === 'view' && [
+              item('m-bars', `${view.bars ? '[x]' : '[ ]'} Usage bars`, () => update($, monitorView, v => ({ ...v, bars: !v.bars })), true),
+              item('m-log', `${view.log ? '[x]' : '[ ]'} Call log`, () => update($, monitorView, v => ({ ...v, log: !v.log })), true),
+              item('m-display', 'Display Properties...', () => openDisplay($)),
+            ]}
+          </Box>
+        )}
+        {view.bars && (
         <Box flexDirection="column" margin={1} padding={1} backgroundColor={WHITE} borderStyle="single" borderColor={SHADOW}>
           <Text color={INK} weight="bold">
             Tool usage
@@ -278,6 +323,8 @@ export const register: Register = on => {
             </Box>
           ))}
         </Box>
+        )}
+        {view.log && (
         <Box flexDirection="column" marginX={1} paddingX={1} backgroundColor={WHITE} borderStyle="single" borderColor={SHADOW}>
           {list.slice(-room).map(c => (
             <Text key={`c-${c.id}`} color={c.isError ? '#b00000' : c.isDone ? '#404040' : INK} wrap="truncate">
@@ -285,6 +332,7 @@ export const register: Register = on => {
             </Text>
           ))}
         </Box>
+        )}
         <Box flexDirection="row" paddingX={1} gap={2} borderStyle="single" borderColor={SHADOW}>
           <Text color={INK}>{list.length} calls</Text>
           <Text color={INK}>{running} running</Text>

@@ -3,6 +3,8 @@ export type DeskWallpaper = 'meadow' | 'teal' | 'navy' | 'black' | 'olive' | 'cl
 export type DeskZoom = '100' | '80' | '65' | '50'
 export type DeskSettings = { scheme: DeskScheme; wallpaper: DeskWallpaper; zoom: DeskZoom; icons: boolean; taskbar: boolean; startup: boolean }
 export type DeskCall = { id: string; tool: string; isDone: boolean; isError: boolean }
+export type DeskMenu = 'file' | 'edit' | 'view'
+export type DeskMonitorView = { bars: boolean; log: boolean }
 export type DeskTab = 'background' | 'appearance' | 'effects'
 
 declare module 'claude-code' {
@@ -13,6 +15,8 @@ declare module 'claude-code' {
       tab: DeskTab
       calls: Shaped<DeskCall[]>
       isStartOpen: boolean
+      monitorMenu: DeskMenu | null
+      monitorView: Shaped<DeskMonitorView>
     }
   }
 }

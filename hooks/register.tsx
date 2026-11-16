@@ -93,10 +93,10 @@ const sanitize = (raw: unknown): DeskSettings => {
 const applyLook = async ($: EngineInterface, s: DeskSettings): Promise<void> => {
   const unpainted = blockingProblem(s.scheme)
   if (unpainted !== undefined) {
-    $.ui.toast(`ClaudeXp: ${unpainted}`)
+    $.ui.toast(`ClaudeXP: ${unpainted}`)
   }
   const set = await $.theme.set(lookFor(s))
-  $.ui.status(set.isDrawn ? `ClaudeXp - Ready (${s.wallpaper})` : `ClaudeXp: ${set.reason}`)
+  $.ui.status(set.isDrawn ? `ClaudeXP - Ready (${s.wallpaper})` : `ClaudeXP: ${set.reason}`)
 }
 
 const commit = async ($: EngineInterface, s: DeskSettings): Promise<void> => {
@@ -124,10 +124,10 @@ export const register: Register = on => {
     await update($, settings, () => stored)
     await applyLook($, stored)
 
-    await $.command.register({ name: 'display', description: 'ClaudeXp: open Display Properties (wallpaper, color scheme, effects)' })
-    await $.command.register({ name: 'sysmon', description: 'ClaudeXp: open the System Monitor window' })
-    await $.command.register({ name: 'startmenu', description: 'ClaudeXp: toggle the Start menu above the prompt' })
-    await $.command.register({ name: 'xp-check', description: 'ClaudeXp: show which screens this session draws on and whether the theme reached them' })
+    await $.command.register({ name: 'display', description: 'ClaudeXP: open Display Properties (wallpaper, color scheme, effects)' })
+    await $.command.register({ name: 'sysmon', description: 'ClaudeXP: open the System Monitor window' })
+    await $.command.register({ name: 'startmenu', description: 'ClaudeXP: toggle the Start menu above the prompt' })
+    await $.command.register({ name: 'xp-check', description: 'ClaudeXP: show which screens this session draws on and whether the theme reached them' })
 
     if (stored.startup) {
       void openMonitor($)
@@ -195,7 +195,7 @@ export const register: Register = on => {
     const { Svg } = ui
     const s = await read($, settings)
     lastBackdrop = e.surface
-    $.ui.status(`ClaudeXp - Ready (${s.wallpaper}, scene drawn on ${e.surface})`)
+    $.ui.status(`ClaudeXP - Ready (${s.wallpaper}, scene drawn on ${e.surface})`)
     return <Svg source={sceneSvg(s)} alt="A retro desktop with pixel icons and a taskbar" isInteractive />
   })
 
@@ -235,7 +235,7 @@ export const register: Register = on => {
           <Box flexDirection="row" borderStyle="round" borderColor={FRAME} backgroundColor={SILVER}>
             <Box backgroundColor={accentOf(s.scheme)} paddingX={1} justifyContent="flex-end">
               <Text color={WHITE} weight="bold">
-                ClaudeXp
+                ClaudeXP
               </Text>
             </Box>
             <Box flexDirection="column" paddingY={1} flexGrow={1}>
@@ -286,7 +286,7 @@ export const register: Register = on => {
     const menu = await read($, monitorMenu)
     const view = await read($, monitorView)
     const summary = [
-      `ClaudeXp System Monitor: ${list.length} calls, ${running} running, ${failed} errors`,
+      `ClaudeXP System Monitor: ${list.length} calls, ${running} running, ${failed} errors`,
       ...[...counts.entries()].sort((a, b) => b[1] - a[1]).map(([tool, n]) => `${tool}: ${n}`),
     ].join('\n')
     const menuButton = (key: DeskMenu, label: string) => (

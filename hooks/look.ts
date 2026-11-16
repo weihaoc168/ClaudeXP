@@ -22,7 +22,7 @@ export const chromeOf = (scheme: DeskScheme): string => SCHEMES[scheme].s1
 const build = (key: DeskScheme) => {
   const s = SCHEMES[key]
   return makeColors({
-    label: `ClaudeXp - ${s.label}`,
+    label: `ClaudeXP - ${s.label}`,
     roles: { accent: s.accent, danger: '#b00000', success: '#007a00', warning: '#a87800', pro: '#800080' },
     light: {
       gray: {
@@ -98,16 +98,27 @@ const bevel = (x: number, y: number, w: number, h: number, sunken = false, fill 
 <path d="M${x} ${y + h - 0.5}H${x + w - 0.5}V${y}" stroke="${outer}" fill="none"/>`
 }
 
-// 32x32 icons drawn from plain shapes, origin at 0,0. All original art.
+// 32x32 icons in a smooth, glossy early-2000s style: soft gradients, rounded
+// corners and a light highlight. Origin at 0,0. All original art.
+const XG = `<defs>
+<linearGradient id="xiScreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fb8ff"/><stop offset=".55" stop-color="#1f6fe0"/><stop offset="1" stop-color="#0a3fa8"/></linearGradient>
+<linearGradient id="xiCase" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7f6f0"/><stop offset="1" stop-color="#c9c5b5"/></linearGradient>
+<linearGradient id="xiFolder" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe58a"/><stop offset=".6" stop-color="#f6c443"/><stop offset="1" stop-color="#d99a16"/></linearGradient>
+<linearGradient id="xiBar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d95ff"/><stop offset=".5" stop-color="#0a5ae8"/><stop offset="1" stop-color="#0646c4"/></linearGradient>
+<linearGradient id="xiSteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9fb3c8"/><stop offset=".45" stop-color="#eef3f8"/><stop offset="1" stop-color="#8aa0b8"/></linearGradient>
+<radialGradient id="xiGlobe" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#bfe6ff"/><stop offset=".45" stop-color="#3a8ef0"/><stop offset="1" stop-color="#0b3f9e"/></radialGradient>
+<linearGradient id="xiMeadow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f8ae6"/><stop offset=".55" stop-color="#9cc8f4"/><stop offset=".56" stop-color="#6fc23a"/><stop offset="1" stop-color="#2f8a1c"/></linearGradient>
+</defs>`
+
 export const ICONS: Record<string, string> = {
-  computer: `<rect x="3" y="2" width="26" height="20" fill="#d8d0b8" stroke="#000"/><rect x="6" y="5" width="20" height="14" fill="#1060a0"/><path d="M8 7h8M8 9h12" stroke="#7fd0ff"/><rect x="11" y="22" width="10" height="3" fill="#a89f88"/><rect x="5" y="25" width="22" height="5" fill="#d8d0b8" stroke="#000"/><rect x="20" y="27" width="4" height="1" fill="#2a2"/>`,
-  bin: `<path d="M8 8h16l-2 21H10z" fill="#e8e8e8" stroke="#000"/><path d="M11 11l1 16M16 11v16M21 11l-1 16" stroke="#808080"/><rect x="6" y="5" width="20" height="3" fill="#c0c0c0" stroke="#000"/><path d="M13 5V3h6v2" stroke="#000" fill="none"/>`,
-  folder: `<path d="M2 8h10l2 3h16v17H2z" fill="#f0c840" stroke="#000"/><rect x="6" y="5" width="16" height="9" fill="#fff" stroke="#808080"/><path d="M8 8h11M8 10h9" stroke="#808080"/><path d="M2 13h28v15H2z" fill="#f0c840" stroke="#000"/>`,
-  terminal: `<rect x="2" y="4" width="28" height="24" fill="#c0c0c0" stroke="#000"/><rect x="3" y="5" width="26" height="4" fill="#000080"/><rect x="25" y="5.5" width="3" height="3" fill="#c0c0c0"/><rect x="4" y="11" width="24" height="15" fill="#000"/><path d="M6 14l3 2-3 2" stroke="#e07a4a" stroke-width="1.5" fill="none"/><rect class="blink" x="11" y="17" width="5" height="2" fill="#e07a4a"/>`,
-  network: `<rect x="2" y="3" width="12" height="9" fill="#d8d0b8" stroke="#000"/><rect x="4" y="5" width="8" height="5" fill="#1060a0"/><rect x="18" y="3" width="12" height="9" fill="#d8d0b8" stroke="#000"/><rect x="20" y="5" width="8" height="5" fill="#1060a0"/><path d="M8 12v6h16v-6M16 18v6" stroke="#000" fill="none"/><rect x="11" y="24" width="10" height="5" fill="#c0c0c0" stroke="#000"/>`,
-  globe: `<circle cx="16" cy="16" r="13" fill="#2a6ad8" stroke="#000"/><path d="M8 9c4 1 5 4 3 7s1 6 3 9M20 5c-2 3 0 5 3 6s4 4 2 8" fill="none" stroke="#3a3" stroke-width="3"/><ellipse cx="16" cy="16" rx="6" ry="13" fill="none" stroke="#9cf" stroke-opacity=".5"/>`,
-  display: `<rect x="3" y="3" width="26" height="19" fill="#c0c0c0" stroke="#000"/><rect x="5" y="5" width="22" height="15" fill="#008080"/><rect x="8" y="8" width="10" height="7" fill="#c0c0c0"/><rect x="8" y="8" width="10" height="2" fill="#000080"/><rect x="12" y="22" width="8" height="4" fill="#808080"/><rect x="7" y="26" width="18" height="3" fill="#c0c0c0" stroke="#000"/><path d="M24 2l2 4 4 1-4 1-2 4-2-4-4-1 4-1z" fill="#ffd84a"/>`,
-  monitor: `<rect x="3" y="3" width="26" height="24" fill="#000" stroke="#808080"/><path d="M5 9h22M5 15h22M5 21h22" stroke="#063"/><path d="M5 22l5-6 4 3 5-9 4 5 4-4" stroke="#0f0" fill="none"/>`,
+  computer: `${XG}<rect x="3" y="2.5" width="26" height="19" rx="2.5" fill="url(#xiCase)" stroke="#7a7666"/><rect x="5.5" y="5" width="21" height="14" rx="1" fill="url(#xiScreen)"/><path d="M6 5.5h20l-8 7H6z" fill="#fff" opacity=".22"/><path d="M12 21.5h8l1.5 4h-11z" fill="#bdb8a6"/><rect x="7" y="25" width="18" height="4" rx="2" fill="url(#xiCase)" stroke="#7a7666"/>`,
+  bin: `${XG}<ellipse cx="16" cy="7" rx="10" ry="3" fill="#dfe7ef" stroke="#5f7590"/><path d="M6.5 8l2 19.5q.3 2 3 2h9q2.7 0 3-2l2-19.5" fill="url(#xiSteel)" stroke="#5f7590"/><path d="M11 11l.8 15M16 11v15M21 11l-.8 15" stroke="#6f86a2" stroke-width="1.2" stroke-linecap="round"/><path d="M8.5 9.5q7.5 2.5 15 0" stroke="#fff" opacity=".7" fill="none"/>`,
+  folder: `${XG}<path d="M2.5 8.5q0-2 2-2h7l2.5 3h13q2 0 2 2V25q0 2-2 2h-22.5q-2 0-2-2z" fill="#d99a16"/><rect x="6" y="8" width="18" height="10" rx="1" fill="#fff" stroke="#c8c2b0"/><path d="M8 11h12M8 13.5h9" stroke="#9aa6c0"/><path d="M2.5 14q0-2 2-2h23q2 0 2 2V25q0 2-2 2h-23q-2 0-2-2z" fill="url(#xiFolder)" stroke="#b07a0e"/><path d="M4 13.5h24" stroke="#fff6c8" opacity=".9"/>`,
+  terminal: `${XG}<rect x="2" y="4" width="28" height="24" rx="3" fill="#ece9d8" stroke="#0831d9"/><path d="M2 9V7q0-3 3-3h22q3 0 3 3v2z" fill="url(#xiBar)"/><rect x="25" y="5" width="3.5" height="3" rx=".8" fill="#e0502a" stroke="#fff" stroke-width=".5"/><rect x="4" y="11" width="24" height="15" rx="1.5" fill="#101418"/><path d="M6.5 14.5l3 2-3 2" stroke="#e07a4a" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect class="blink" x="11" y="17.5" width="5" height="1.8" rx=".6" fill="#e07a4a"/>`,
+  network: `${XG}<rect x="2" y="3" width="13" height="10" rx="1.5" fill="url(#xiCase)" stroke="#7a7666"/><rect x="3.8" y="4.8" width="9.4" height="6.4" rx=".6" fill="url(#xiScreen)"/><rect x="17" y="3" width="13" height="10" rx="1.5" fill="url(#xiCase)" stroke="#7a7666"/><rect x="18.8" y="4.8" width="9.4" height="6.4" rx=".6" fill="url(#xiScreen)"/><path d="M8.5 13v5h15v-5M16 18v5" stroke="#3a7a2a" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="16" cy="25.5" r="4" fill="#5fbf55" stroke="#2f7a28"/><circle cx="14.8" cy="24.3" r="1.2" fill="#fff" opacity=".7"/>`,
+  globe: `${XG}<circle cx="16" cy="16" r="13" fill="url(#xiGlobe)" stroke="#0b3f9e"/><path d="M9 9c3 0 5 2 4 5s1 5 3 6-1 5-3 6M20 5.5c-1.5 2.5.5 4 3 5s2.5 4 .5 6 0 4 2.5 4" fill="none" stroke="#5fbf55" stroke-width="2.6" stroke-linecap="round"/><ellipse cx="11.5" cy="9.5" rx="5" ry="3" fill="#fff" opacity=".35"/>`,
+  display: `${XG}<rect x="3" y="3" width="26" height="19" rx="2.5" fill="url(#xiCase)" stroke="#7a7666"/><rect x="5.5" y="5.5" width="21" height="14" rx="1" fill="url(#xiMeadow)"/><path d="M6 5.5h20l-8 7H6z" fill="#fff" opacity=".18"/><path d="M12 22h8l1.5 4h-11z" fill="#bdb8a6"/><rect x="8" y="25.5" width="16" height="3.5" rx="1.7" fill="url(#xiCase)" stroke="#7a7666"/>`,
+  monitor: `${XG}<rect x="3" y="3" width="26" height="24" rx="3" fill="#0d1a2e" stroke="#0831d9"/><path d="M5.5 9.5h21M5.5 15h21M5.5 20.5h21" stroke="#1d3a5e"/><path d="M5.5 22l5-6 4 3 5-9 3 4 3.5-5" stroke="#5fe05a" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 5q12 0 24 0" stroke="#fff" opacity=".25"/>`,
   spark: `<path d="M16 2l2.5 9.5L28 9l-7.5 6.5L28 22l-9.5-2.5L16 30l-2.5-10.5L4 22l7.5-6.5L4 9l9.5 2.5z" fill="#e07a4a" stroke="#7a2e10" stroke-width=".8"/>`,
 }
 

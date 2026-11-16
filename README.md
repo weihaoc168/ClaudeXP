@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/banner.jpg" alt="ClaudeXp: a green meadow desktop with icons, a taskbar and a Setup window" width="900">
+  <img src="assets/banner.jpg" alt="ClaudeXP: a green meadow desktop with icons, a taskbar and a Setup window" width="900">
 </p>
 
-<h1 align="center">🖥️ ClaudeXp</h1>
+<h1 align="center">🖥️ ClaudeXP</h1>
 
 <p align="center">
   <strong>IT'S NOT A BUG, IT'S A FEATURE OF 2001! 💿</strong>
@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/windows-cream%20%23ece9d8-ece9d8?style=for-the-badge" alt="Cream windows">
 </p>
 
-**ClaudeXp** is a mod that dresses Claude Code like an early-2000s desktop: a rolling green meadow behind the chat, desktop icons, a blue taskbar with a green `start` button and a blinking `Ready_`, rounded blue-framed windows with red close boxes, a start band above the prompt, a live **System Monitor** window and a proper **Display Properties** dialog.
+**ClaudeXP** is a mod that dresses Claude Code like an early-2000s desktop: a rolling green meadow behind the chat, desktop icons, a blue taskbar with a green `start` button and a blinking `Ready_`, rounded blue-framed windows with red close boxes, a start band above the prompt, a live **System Monitor** window and a proper **Display Properties** dialog.
 
 Everything is drawn by the mod itself: original pixel icons, an original meadow, no copied wallpapers.
 
@@ -27,16 +27,16 @@ Everything is drawn by the mod itself: original pixel icons, an original meadow,
 At the prompt of a terminal session:
 
 ```
-/plugin install claudexp --marketplace weihaoc168/ClaudeXp
+/plugin install claudexp --marketplace weihaoc168/ClaudeXP
 ```
 
 From a shell:
 
 ```bash
-claude plugin install claudexp --marketplace weihaoc168/ClaudeXp
+claude plugin install claudexp --marketplace weihaoc168/ClaudeXP
 ```
 
-In the desktop app: click **+** next to the prompt box → **Plugins** → **Add marketplace** with `weihaoc168/ClaudeXp` → **Add plugin**.
+In the desktop app: click **+** next to the prompt box → **Plugins** → **Add marketplace** with `weihaoc168/ClaudeXP` → **Add plugin**.
 
 Answer `y` to add the marketplace and pick the **user** scope, and every new session boots into 2001.
 
@@ -79,4 +79,4 @@ Three tabs, OK / Cancel / Apply, just like you remember:
 
 ---
 
-<p align="center"><sub>Not affiliated with or endorsed by Microsoft. ClaudeXp is an original tribute; all art is drawn from scratch.</sub></p>
+<p align="center"><sub>Not affiliated with or endorsed by Microsoft. ClaudeXP is an original tribute; all art is drawn from scratch.</sub></p>

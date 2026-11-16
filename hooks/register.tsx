@@ -396,7 +396,7 @@ export const register: Register = on => {
             </Box>
           </Box>
           <Text color={SHADOW} size="caption">
-            Dark mode uses the shared "After Hours" scheme.
+            Used in both light and dark mode: always silver with black text.
           </Text>
         </Box>
       ) : (

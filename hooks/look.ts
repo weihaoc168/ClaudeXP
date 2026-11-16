@@ -3,13 +3,14 @@ import type { ThemeSetArgs } from 'claude-code'
 import type { DeskScheme, DeskSettings, DeskWallpaper } from '../types'
 import { makeColors } from './make-colors.js'
 
-// Classic late-90s desktop color schemes. Light mode is the silver-chrome
-// scheme; dark mode is a shared "after hours" scheme, a CRT left on at night.
+// Desktop color schemes in the spirit of the early-2000s look: cream window
+// bodies with a blue, olive or silver accent. Light mode is this cream look;
+// dark mode is a shared "after hours" scheme, a monitor left on at night.
 const SCHEMES: Record<DeskScheme, { label: string; accent: string; s0: string; s1: string; s2: string }> = {
-  standard: { label: 'Standard', accent: '#000080', s0: '#c0c0c0', s1: '#d4d0c8', s2: '#f2f1ec' },
-  rose: { label: 'Rose', accent: '#800040', s0: '#cfb4b4', s1: '#ddc7c6', s2: '#f3e9e8' },
-  slate: { label: 'Slate', accent: '#2f4f6f', s0: '#a9b8c6', s1: '#c0ccd7', s2: '#e6ecf1' },
-  eggplant: { label: 'Eggplant', accent: '#4b2a6a', s0: '#b6aec2', s1: '#c9c2d3', s2: '#ece8f1' },
+  standard: { label: 'Blue (default)', accent: '#0a4fd6', s0: '#ece9d8', s1: '#f1efe2', s2: '#fbfaf5' },
+  rose: { label: 'Olive Green', accent: '#4f6b26', s0: '#e8ead8', s1: '#eff1e2', s2: '#fafbf5' },
+  slate: { label: 'Silver', accent: '#4a5a80', s0: '#e3e3ea', s1: '#ececf1', s2: '#f8f8fb' },
+  eggplant: { label: 'Royale', accent: '#1d3a9a', s0: '#e6e8f0', s1: '#eef0f6', s2: '#fafbfd' },
 }
 
 const SCHEME_KEYS = Object.keys(SCHEMES) as DeskScheme[]
@@ -70,7 +71,7 @@ export const lookFor = (s: DeskSettings): ThemeSetArgs => ({
   // Every wallpaper is a live scene drawn by the mod. The glass takes the app's
   // own panel color (dark in dark mode): thick enough, and frosted, that text
   // reads over the bright sky, thin enough that the meadow still shows.
-  backdrop: { scene: 'desktop98', glass: { blur: 6, opacity: 0.5 } },
+  backdrop: { scene: 'desktopxp', glass: { blur: 6, opacity: 0.5 } },
 })
 
 // ---------- the desktop scene: original pixel-art icons and a taskbar ----------
@@ -113,7 +114,7 @@ export const ICONS: Record<string, string> = {
 const iconAt = (name: string, x: number, y: number, label: string, selected = false): string => {
   const w = label.length * 6.2 + 6
   return `<g transform="translate(${x},${y})"><g transform="translate(22,0)">${ICONS[name]}</g>
-<rect x="${38 - w / 2}" y="36" width="${w}" height="14" fill="${selected ? '#000080' : 'none'}" ${selected ? 'stroke="#ffff80" stroke-dasharray="1 1"' : ''}/>
+<rect x="${38 - w / 2}" y="36" width="${w}" height="14" fill="${selected ? '#316ac5' : 'none'}" ${selected ? 'stroke="#9fb9e8" stroke-dasharray="1 1"' : ''}/>
 <text x="38" y="47" text-anchor="middle" fill="#fff" stroke="#000" stroke-opacity=".55" stroke-width="2.4" paint-order="stroke" stroke-linejoin="round" font-family="sans-serif" font-size="11">${label}</text></g>`
 }
 
@@ -214,16 +215,25 @@ export const sceneSvg = (s: DeskSettings): string => {
     : ''
   const taskbar = s.taskbar
     ? `<g class="pin-b"><g transform="translate(0,${H})">
-<rect x="-1000" y="-34" width="${W + 2000}" height="34" fill="#c0c0c0"/><rect x="-1000" y="-34" width="${W + 2000}" height="1" fill="#dfdfdf"/><rect x="-1000" y="-33" width="${W + 2000}" height="1" fill="#fff"/>
-<g class="pin-l"><g transform="translate(2,-31) scale(1.15)">
-<g>${bevel(0, 0, 60, 24)}<g transform="translate(4,4) scale(.5)">${ICONS.spark}</g><text x="23" y="16" font-family="sans-serif" font-weight="bold" font-size="12">Start</text></g>
-<rect x="66" y="1" width="1" height="22" fill="#808080"/><rect x="67" y="1" width="1" height="22" fill="#fff"/>
-<g transform="translate(74,3) scale(.56)">${ICONS.globe}</g><g transform="translate(94,3) scale(.56)">${ICONS.folder}</g><g transform="translate(114,3) scale(.56)">${ICONS.terminal}</g>
-<g transform="translate(140,0)">${bevel(0, 0, 170, 24, true, '#e8e8e8')}<g transform="translate(5,4) scale(.5)">${ICONS.terminal}</g><text x="26" y="16" font-family="sans-serif" font-weight="bold" font-size="11">Claude Code</text></g>
+<defs>
+<linearGradient id="tbar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a81f3"/><stop offset=".08" stop-color="#2a6ee8"/><stop offset=".5" stop-color="#245edb"/><stop offset=".92" stop-color="#1f50c4"/><stop offset="1" stop-color="#1941a5"/></linearGradient>
+<linearGradient id="tstart" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fbf55"/><stop offset=".15" stop-color="#3f9f36"/><stop offset=".85" stop-color="#2f8a28"/><stop offset="1" stop-color="#2a7520"/></linearGradient>
+<linearGradient id="ttray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c9cf0"/><stop offset=".5" stop-color="#0f8ae0"/><stop offset="1" stop-color="#0d6fc4"/></linearGradient>
+<linearGradient id="ttask" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a5fc9"/><stop offset=".5" stop-color="#1e4fb4"/><stop offset="1" stop-color="#1a47a6"/></linearGradient>
+</defs>
+<rect x="-1000" y="-34" width="${W + 2000}" height="34" fill="url(#tbar)"/>
+<g class="pin-l"><g transform="translate(0,-34) scale(1.15)">
+<path d="M0 0H82Q96 0 96 14.8Q96 29.6 82 29.6H0z" fill="url(#tstart)"/>
+<path d="M0 1H81Q93 1 94 9" stroke="#9be08f" stroke-opacity=".7" fill="none"/>
+<g transform="translate(7,5) scale(.6)">${ICONS.spark}</g>
+<text x="30" y="20.5" font-family="Trebuchet MS, Tahoma, sans-serif" font-style="italic" font-weight="bold" font-size="16" fill="#fff" stroke="#1b5a14" stroke-opacity=".6" stroke-width="1.6" paint-order="stroke">start</text>
+<g transform="translate(104,6) scale(.56)">${ICONS.globe}</g><g transform="translate(124,6) scale(.56)">${ICONS.folder}</g><g transform="translate(144,6) scale(.56)">${ICONS.terminal}</g>
+<g transform="translate(170,3)"><rect width="170" height="23.6" rx="3" fill="url(#ttask)" stroke="#0f3a8f"/><rect x="1" y="1" width="168" height="1" fill="#6a9cf0" opacity=".7"/><g transform="translate(5,4) scale(.5)">${ICONS.terminal}</g><text x="26" y="16" font-family="Tahoma, sans-serif" font-size="11" fill="#fff">Claude Code</text></g>
 </g></g>
-<g class="pin-r"><g transform="translate(${W - 104},-31) scale(1.15)">${bevel(0, 0, 88, 24, true)}
-<path d="M8 9h3l4-4v14l-4-4H8z" fill="#ffd84a" stroke="#000" stroke-width=".7"/><g transform="translate(20,5) scale(.44)">${ICONS.network}</g>
-<text x="40" y="16" font-family="sans-serif" font-size="11">Ready<tspan class="blink">_</tspan></text></g></g>
+<g class="pin-r"><g transform="translate(${W - 112},-34) scale(1.15)">
+<rect width="100" height="29.6" fill="url(#ttray)"/><rect width="1" height="29.6" fill="#0a4fa8"/><rect x="1" width="1" height="29.6" fill="#5cc0ff" opacity=".7"/>
+<path d="M10 11h3l4-4v14l-4-4h-3z" fill="#ffd84a" stroke="#1a3a6a" stroke-width=".7"/><g transform="translate(22,7) scale(.44)">${ICONS.network}</g>
+<text x="44" y="19" font-family="Tahoma, sans-serif" font-size="11" fill="#fff">Ready<tspan class="blink">_</tspan></text></g></g>
 </g></g>`
     : ''
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice">
@@ -241,7 +251,7 @@ export const previewSvg = (s: DeskSettings): string => {
     ? `<g transform="translate(36,20) scale(.4)">${ICONS.computer}</g><g transform="translate(36,38) scale(.4)">${ICONS.folder}</g><g transform="translate(36,56) scale(.4)">${ICONS.bin}</g>`
     : ''
   const bar = s.taskbar
-    ? '<rect x="32" y="108" width="136" height="8" fill="#c0c0c0"/><rect x="33" y="109" width="16" height="6" fill="#d4d0c8" stroke="#000" stroke-width=".5"/>'
+    ? '<rect x="32" y="108" width="136" height="8" fill="#245edb"/><path d="M32 108h16q4 0 4 4t-4 4H32z" fill="#3c9a2f"/><rect x="152" y="108" width="16" height="8" fill="#0f8ae0"/>'
     : ''
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 156" width="200" height="156">
 <defs>${SKY}</defs>
@@ -252,7 +262,7 @@ ${
       : `<rect x="32" y="16" width="136" height="100" fill="${fill}" stroke="#606060"/>`
   }
 ${icons}
-<rect x="70" y="34" width="70" height="46" fill="${chromeOf(s.scheme)}" stroke="#000"/><rect x="71" y="35" width="68" height="8" fill="${accentOf(s.scheme)}"/>
+<rect x="70" y="34" width="70" height="46" rx="3" fill="${chromeOf(s.scheme)}" stroke="#0831d9"/><path d="M70 42v-5q0-3 3-3h64q3 0 3 3v5z" fill="${accentOf(s.scheme)}"/><rect x="131" y="35.5" width="6" height="5" rx="1" fill="#e0502a"/>
 <rect x="74" y="50" width="62" height="24" fill="#fff" stroke="#808080"/>
 ${bar}
 <rect x="150" y="122" width="8" height="3" fill="#2a2"/>

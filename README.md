@@ -5,16 +5,16 @@
 <h1 align="center">🖥️ ClaudeXp</h1>
 
 <p align="center">
-  <strong>IT'S NOT A BUG, IT'S A FEATURE OF 1998! 💾</strong>
+  <strong>IT'S NOT A BUG, IT'S A FEATURE OF 2001! 💿</strong>
 </p>
 
 <p align="center">
-  <a href="#-install"><img src="https://img.shields.io/badge/Claude%20Code-mod-000080?style=for-the-badge" alt="Claude Code mod"></a>
-  <img src="https://img.shields.io/badge/surface-desktop%20%7C%20terminal-008080?style=for-the-badge" alt="Desktop and terminal">
-  <img src="https://img.shields.io/badge/chrome-silver%20%23c0c0c0-c0c0c0?style=for-the-badge" alt="Silver chrome">
+  <a href="#-install"><img src="https://img.shields.io/badge/Claude%20Code-mod-0a4fd6?style=for-the-badge" alt="Claude Code mod"></a>
+  <img src="https://img.shields.io/badge/start-button-3c9a2f?style=for-the-badge" alt="Green start button">
+  <img src="https://img.shields.io/badge/windows-cream%20%23ece9d8-ece9d8?style=for-the-badge" alt="Cream windows">
 </p>
 
-**ClaudeXp** is a mod that dresses Claude Code like a late-90s desktop: silver beveled chrome, a rolling green meadow behind the chat, desktop icons, a taskbar with a blinking `Ready_`, a Start band above the prompt, a live **System Monitor** window and a proper **Display Properties** dialog.
+**ClaudeXp** is a mod that dresses Claude Code like an early-2000s desktop: a rolling green meadow behind the chat, desktop icons, a blue taskbar with a green `start` button and a blinking `Ready_`, rounded blue-framed windows with red close boxes, a start band above the prompt, a live **System Monitor** window and a proper **Display Properties** dialog.
 
 Everything is drawn by the mod itself: original pixel icons, an original meadow, no copied wallpapers.
 
@@ -38,7 +38,7 @@ claude plugin install claudexp --marketplace weihaoc168/ClaudeXp
 
 In the desktop app: click **+** next to the prompt box → **Plugins** → **Add marketplace** with `weihaoc168/ClaudeXp` → **Add plugin**.
 
-Answer `y` to add the marketplace and pick the **user** scope, and every new session boots into 1998.
+Answer `y` to add the marketplace and pick the **user** scope, and every new session boots into 2001.
 
 ## ✨ Features
 
@@ -46,10 +46,10 @@ Answer `y` to add the marketplace and pick the **user** scope, and every new ses
 | --- | --- |
 | 🌄 **Meadow desktop** | A live scene behind the chat: sky, drifting clouds, hills and grass, under a light glass veil so your text stays readable. Zoom it from 100% to 50% to see the whole picture. |
 | 🗂️ **Desktop icons** | My Computer, My Documents, The Internet, Network, Recycle Bin and Claude Code, pinned to the top-left at any window shape. |
-| ▬ **Taskbar** | Start button, quick-launch tray, a Claude Code task and a clock-tray that blinks `Ready_`. |
-| 🟦 **Start band** | `Start`, `System Monitor` and `Display` buttons right above the prompt. The Start menu opens every window. |
-| 📊 **System Monitor** | A Win98-style window beside the chat counting each tool call, with usage bars, a scrolling call log and `[ok]` / `[!!]` results. Working **File / Edit / View** menus: clear the log, copy a summary, hide the bars or the log. |
-| 🎨 **Color schemes** | Standard, Rose, Slate and Eggplant in light mode, and a shared "After Hours" scheme in dark mode. |
+| ▬ **Taskbar** | A glossy blue bar with a rounded green `start` button, quick-launch icons, a Claude Code task and a light-blue tray that blinks `Ready_`. |
+| 🟢 **Start band** | A green `start` button, `System Monitor` and `Display` buttons right above the prompt. The Start menu opens every window. |
+| 📊 **System Monitor** | A window beside the chat, cream with a blue frame and a red close box, counting each tool call, with usage bars, a scrolling call log and `[ok]` / `[!!]` results. Working **File / Edit / View** menus: clear the log, copy a summary, hide the bars or the log. |
+| 🎨 **Color schemes** | Blue, Olive Green, Silver and Royale in light mode, and a shared "After Hours" scheme in dark mode. |
 | 💾 **Remembers you** | Your wallpaper, scheme and effects are kept across sessions. |
 
 ## ⌨️ Commands
@@ -59,7 +59,7 @@ Answer `y` to add the marketplace and pick the **user** scope, and every new ses
 | `/display` | Display Properties |
 | `/sysmon` | System Monitor |
 | `/startmenu` | The Start menu |
-| `/win98-check` | Which screens the session draws on, and whether the theme reached them |
+| `/xp-check` | Which screens the session draws on, and whether the theme reached them |
 
 ## 🖼️ Display Properties
 

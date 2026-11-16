@@ -1,1 +1,1 @@
-{ "name": "claudexp", "version": "0.1.0", "description": "A retro 1998-desktop look: silver chrome, a green meadow desktop with icons, window-style panes and a Display Properties settings window", "types": "./types/index.d.ts" }
+{ "name": "claudexp", "version": "0.1.0", "description": "An early-2000s desktop look: a green meadow desktop, blue taskbar with a green start button, icons, window-style panes and a Display Properties settings window", "types": "./types/index.d.ts" }

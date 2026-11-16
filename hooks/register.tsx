@@ -30,19 +30,26 @@ const monitorMenu = atom({ plugin: 'claudexp', key: 'monitorMenu' } as const, nu
 const monitorView = atom({ plugin: 'claudexp', key: 'monitorView' } as const, { bars: true, log: true } as DeskMonitorView, { shape: 'view-1' })
 
 // Classic window chrome colors, fixed so the windows read the same in both modes.
-const SILVER = '#c0c0c0'
-const SHADOW = '#808080'
+// XP-style window chrome: cream bodies, blue frames, soft blue-gray edges.
+const SILVER = '#ece9d8'
+const SHADOW = '#7f9db9'
+const FRAME = '#0831d9'
+const BUTTON_EDGE = '#003c74'
+const BUTTON_FACE = '#fbfbf8'
+const SELECTED = '#316ac5'
+const CLOSE_RED = '#e0502a'
+const START_GREEN = '#3c9a2f'
 const WHITE = '#ffffff'
 const INK = '#000000'
 const NAVY = '#000080'
 
-// A Win98 push button drawn by the mod: black text on silver, navy when
-// active. The app's own button styles go pale in dark mode on these boxes.
+// An XP push button drawn by the mod: black text on a pale rounded face,
+// blue when active. The app's own button styles go pale in dark mode on these boxes.
 type WinButtonArgs = { id: string; label: string; isActive?: boolean; onPress: () => unknown }
 const winButton = (ui: ReturnType<EngineInterface['ui']['resolve']>, a: WinButtonArgs) => {
   const { Box, Text, Button } = ui
   return (
-    <Box key={a.id} backgroundColor={a.isActive ? NAVY : SILVER} borderStyle="single" borderColor={a.isActive ? NAVY : SHADOW} paddingX={1}>
+    <Box key={a.id} backgroundColor={a.isActive ? SELECTED : BUTTON_FACE} borderStyle="round" borderColor={a.isActive ? SELECTED : BUTTON_EDGE} paddingX={1}>
       <Button key={`${a.id}-b`} plain label={a.label} onPress={a.onPress}>
         <Text color={a.isActive ? WHITE : INK} weight={a.isActive ? 'bold' : undefined}>
           {a.label}
@@ -52,7 +59,21 @@ const winButton = (ui: ReturnType<EngineInterface['ui']['resolve']>, a: WinButto
   )
 }
 
-// Which surface last asked for the backdrop, for /win98-check.
+// The XP red close box for a window's title bar.
+const closeBox = (ui: ReturnType<EngineInterface['ui']['resolve']>, id: string, onPress: () => unknown) => {
+  const { Box, Text, Button } = ui
+  return (
+    <Box key={id} backgroundColor={CLOSE_RED} borderStyle="round" borderColor={WHITE} paddingX={1}>
+      <Button key={`${id}-b`} plain label="Close" onPress={onPress}>
+        <Text color={WHITE} weight="bold">
+          ✕
+        </Text>
+      </Button>
+    </Box>
+  )
+}
+
+// Which surface last asked for the backdrop, for /xp-check.
 let lastBackdrop: string | undefined
 
 const sanitize = (raw: unknown): DeskSettings => {
@@ -106,7 +127,7 @@ export const register: Register = on => {
     await $.command.register({ name: 'display', description: 'ClaudeXp: open Display Properties (wallpaper, color scheme, effects)' })
     await $.command.register({ name: 'sysmon', description: 'ClaudeXp: open the System Monitor window' })
     await $.command.register({ name: 'startmenu', description: 'ClaudeXp: toggle the Start menu above the prompt' })
-    await $.command.register({ name: 'win98-check', description: 'ClaudeXp: show which screens this session draws on and whether the theme reached them' })
+    await $.command.register({ name: 'xp-check', description: 'ClaudeXp: show which screens this session draws on and whether the theme reached them' })
 
     if (stored.startup) {
       void openMonitor($)
@@ -131,7 +152,7 @@ export const register: Register = on => {
     return { text: 'Start menu toggled.' }
   })
 
-  on('command.run', { command: 'win98-check' }, async $ => {
+  on('command.run', { command: 'xp-check' }, async $ => {
     const surfaces = await $.session.surfaces()
     const s = await read($, settings)
     const set = await $.theme.set(lookFor(s))
@@ -193,7 +214,7 @@ export const register: Register = on => {
     const icon = (name: string) => (isGraphic ? <Svg source={iconSvg(name, 16)} alt="" width={16} height={16} /> : null)
 
     const item = (key: string, name: string, label: string, run: () => Promise<void> | void) => (
-      <Box key={`row-${key}`} flexDirection="row" alignItems="center" gap="xs" paddingX={1} hover={{ backgroundColor: accentOf(s.scheme) }}>
+      <Box key={`row-${key}`} flexDirection="row" alignItems="center" gap="xs" paddingX={1} hover={{ backgroundColor: '#c1d2ee' }}>
         {icon(name)}
         <Button
           key={key}
@@ -203,14 +224,16 @@ export const register: Register = on => {
             await update($, isStartOpen, () => false)
             await run()
           }}
-        />
+        >
+          <Text color={INK}>{label}</Text>
+        </Button>
       </Box>
     )
 
     return (
       <Box flexDirection="column">
         {isOpen && (
-          <Box flexDirection="row" borderStyle="single" borderColor={INK} backgroundColor={SILVER}>
+          <Box flexDirection="row" borderStyle="round" borderColor={FRAME} backgroundColor={SILVER}>
             <Box backgroundColor={accentOf(s.scheme)} paddingX={1} justifyContent="flex-end">
               <Text color={WHITE} weight="bold">
                 ClaudeXp
@@ -231,7 +254,13 @@ export const register: Register = on => {
         )}
         <Box flexDirection="row" alignItems="center" gap="xs">
           {icon('spark')}
-          <Button key="start" label={isOpen ? 'Start ▾' : 'Start'} variant={isOpen ? 'primary' : 'secondary'} onPress={() => update($, isStartOpen, v => !v)} />
+          <Box key="start-box" backgroundColor={START_GREEN} borderStyle="round" borderColor={isOpen ? WHITE : '#2b7a22'} paddingX={1}>
+            <Button key="start" plain label="start" onPress={() => update($, isStartOpen, v => !v)}>
+              <Text color={WHITE} weight="bold" italic>
+                {isOpen ? 'start ▾' : 'start'}
+              </Text>
+            </Button>
+          </Box>
           <Button key="qs-monitor" label="System Monitor" dimColor onPress={() => openMonitor($)} />
           <Button key="qs-display" label="Display" dimColor onPress={() => openDisplay($)} />
         </Box>
@@ -280,7 +309,7 @@ export const register: Register = on => {
     )
 
     return (
-      <Box flexDirection="column" borderStyle="single" borderColor={INK} backgroundColor={SILVER}>
+      <Box flexDirection="column" borderStyle="round" borderColor={FRAME} backgroundColor={SILVER}>
         <Box flexDirection="row" backgroundColor={accentOf(s.scheme)} paddingX={1} alignItems="center" gap="xs">
           {isGraphic && <Svg source={iconSvg('monitor', 16)} alt="" width={16} height={16} />}
           <Box flexGrow={1}>
@@ -288,7 +317,7 @@ export const register: Register = on => {
               System Monitor
             </Text>
           </Box>
-          <Button key="mon-close" plain label="✕" onPress={() => $.ui.close({ id: MONITOR })} />
+          {closeBox(ui, 'mon-close', () => $.ui.close({ id: MONITOR }))}
         </Box>
         <Box flexDirection="row" paddingX={1} gap={1} alignItems="center">
           {menuButton('file', 'File')}
@@ -437,7 +466,7 @@ export const register: Register = on => {
       )
 
     return (
-      <Box flexDirection="column" borderStyle="single" borderColor={INK} backgroundColor={SILVER}>
+      <Box flexDirection="column" borderStyle="round" borderColor={FRAME} backgroundColor={SILVER}>
         <Box flexDirection="row" backgroundColor={accentOf(saved.scheme)} paddingX={1} alignItems="center" gap="xs">
           {isGraphic && <Svg source={iconSvg('display', 16)} alt="" width={16} height={16} />}
           <Box flexGrow={1}>
@@ -445,7 +474,7 @@ export const register: Register = on => {
               Display Properties
             </Text>
           </Box>
-          <Button key="dp-x" plain label="✕" onPress={() => $.ui.close({ id: DISPLAY })} />
+          {closeBox(ui, 'dp-x', () => $.ui.close({ id: DISPLAY }))}
         </Box>
         <Box flexDirection="row" paddingX={1} paddingTop={1} gap="xs">
           {tabButton('background', 'Background')}

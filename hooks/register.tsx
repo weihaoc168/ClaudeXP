@@ -35,7 +35,10 @@ const SILVER = '#ece9d8'
 const SHADOW = '#7f9db9'
 const FRAME = '#0831d9'
 const BUTTON_EDGE = '#003c74'
-const BUTTON_FACE = '#fbfbf8'
+// Button faces take the app's own inverse-text color: dark in dark mode, light
+// in light mode, so the app's button text (which a mod can't recolor) always
+// stands out on them.
+const FACE = 'inverseText'
 const SELECTED = '#316ac5'
 const CLOSE_RED = '#e0502a'
 const START_GREEN = '#3c9a2f'
@@ -49,12 +52,8 @@ type WinButtonArgs = { id: string; label: string; isActive?: boolean; onPress: (
 const winButton = (ui: ReturnType<EngineInterface['ui']['resolve']>, a: WinButtonArgs) => {
   const { Box, Text, Button } = ui
   return (
-    <Box key={a.id} backgroundColor={a.isActive ? SELECTED : BUTTON_FACE} borderStyle="round" borderColor={a.isActive ? SELECTED : BUTTON_EDGE} paddingX={1}>
-      <Button key={`${a.id}-b`} plain onPress={a.onPress}>
-        <Text color={a.isActive ? WHITE : INK} weight={a.isActive ? 'bold' : undefined}>
-          {a.label}
-        </Text>
-      </Button>
+    <Box key={a.id} backgroundColor={FACE} borderStyle="round" borderColor={a.isActive ? SELECTED : BUTTON_EDGE} paddingX={1}>
+      <Button key={`${a.id}-b`} plain label={a.isActive ? `▸ ${a.label}` : a.label} onPress={a.onPress} />
     </Box>
   )
 }
@@ -64,11 +63,7 @@ const closeBox = (ui: ReturnType<EngineInterface['ui']['resolve']>, id: string, 
   const { Box, Text, Button } = ui
   return (
     <Box key={id} backgroundColor={CLOSE_RED} borderStyle="round" borderColor={WHITE} marginY="xs" marginRight="xs" paddingX="xs">
-      <Button key={`${id}-b`} plain onPress={onPress}>
-        <Text color={WHITE} weight="bold" size="caption">
-          ✕
-        </Text>
-      </Button>
+      <Button key={`${id}-b`} plain label="✕" onPress={onPress} />
     </Box>
   )
 }
@@ -219,13 +214,12 @@ export const register: Register = on => {
         <Button
           key={key}
           plain
+          label={label}
           onPress={async () => {
             await update($, isStartOpen, () => false)
             await run()
           }}
-        >
-          <Text color={INK}>{label}</Text>
-        </Button>
+        />
       </Box>
     )
 
@@ -238,7 +232,7 @@ export const register: Register = on => {
                 ClaudeXP
               </Text>
             </Box>
-            <Box flexDirection="column" paddingY={1} flexGrow={1}>
+            <Box flexDirection="column" paddingY={1} flexGrow={1} backgroundColor={FACE}>
               {item('sm-monitor', 'monitor', 'System Monitor', () => openMonitor($))}
               {item('sm-display', 'display', 'Display Properties...', () => openDisplay($, 'background'))}
               {item('sm-scheme', 'folder', 'Appearance...', () => openDisplay($, 'appearance'))}
@@ -254,11 +248,7 @@ export const register: Register = on => {
         <Box flexDirection="row" alignItems="center" gap="xs">
           {icon('spark')}
           <Box key="start-box" backgroundColor={START_GREEN} borderStyle="round" borderColor={isOpen ? WHITE : '#2b7a22'} paddingX={1}>
-            <Button key="start" plain onPress={() => update($, isStartOpen, v => !v)}>
-              <Text color={WHITE} weight="bold" italic>
-                {isOpen ? 'start ▾' : 'start'}
-              </Text>
-            </Button>
+            <Button key="start" plain label={isOpen ? 'start ▾' : 'start'} onPress={() => update($, isStartOpen, v => !v)} />
           </Box>
           <Button key="qs-monitor" label="System Monitor" dimColor onPress={() => openMonitor($)} />
           <Button key="qs-display" label="Display" dimColor onPress={() => openDisplay($)} />
@@ -297,13 +287,12 @@ export const register: Register = on => {
       <Button
         key={key}
         plain
+        label={label}
         onPress={async press => {
           if (!keepOpen) await update($, monitorMenu, () => null)
           await run(press)
         }}
-      >
-        <Text color={INK}>{label}</Text>
-      </Button>
+      />
     )
 
     return (
@@ -325,7 +314,7 @@ export const register: Register = on => {
           {winButton(ui, { id: "mon-clear", label: "Clear", onPress: () => update($, calls, () => []) })}
         </Box>
         {menu !== null && (
-          <Box flexDirection="column" marginX={1} padding={1} backgroundColor={WHITE} borderStyle="single" borderColor={INK} gap="xs">
+          <Box flexDirection="column" marginX={1} padding={1} backgroundColor={FACE} borderStyle="single" borderColor={INK} gap="xs">
             {menu === 'file' && [
               item('m-clear', 'Clear log', () => update($, calls, () => [])),
               item('m-close', 'Close', () => $.ui.close({ id: MONITOR })),
@@ -412,9 +401,7 @@ export const register: Register = on => {
       winButton(ui, { id: `tab-${key}`, label: label, isActive: t === key, onPress: () => update($, tab, () => key) })
     )
     const check = (key: string, label: string, value: boolean, patch: (v: boolean) => Partial<DeskSettings>) => (
-      <Button key={key} plain onPress={() => setDraft(patch(!value))}>
-        <Text color={INK}>{`${value ? '[x]' : '[ ]'} ${label}`}</Text>
-      </Button>
+      winButton(ui, { id: key, label: `${value ? '[x]' : '[ ]'} ${label}`, onPress: () => setDraft(patch(!value)) })
     )
 
     const body =

@@ -63,9 +63,9 @@ const winButton = (ui: ReturnType<EngineInterface['ui']['resolve']>, a: WinButto
 const closeBox = (ui: ReturnType<EngineInterface['ui']['resolve']>, id: string, onPress: () => unknown) => {
   const { Box, Text, Button } = ui
   return (
-    <Box key={id} backgroundColor={CLOSE_RED} borderStyle="round" borderColor={WHITE} paddingX={1}>
+    <Box key={id} backgroundColor={CLOSE_RED} borderStyle="round" borderColor={WHITE} marginY="xs" marginRight="xs" paddingX="xs">
       <Button key={`${id}-b`} plain onPress={onPress}>
-        <Text color={WHITE} weight="bold">
+        <Text color={WHITE} weight="bold" size="caption">
           ✕
         </Text>
       </Button>

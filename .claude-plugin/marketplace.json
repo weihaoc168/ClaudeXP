@@ -1,0 +1,5 @@
+{
+  "name": "claude98",
+  "owner": { "name": "weihaoc168" },
+  "plugins": [{ "name": "claude98", "source": "./" }]
+}

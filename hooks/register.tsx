@@ -50,7 +50,7 @@ const winButton = (ui: ReturnType<EngineInterface['ui']['resolve']>, a: WinButto
   const { Box, Text, Button } = ui
   return (
     <Box key={a.id} backgroundColor={a.isActive ? SELECTED : BUTTON_FACE} borderStyle="round" borderColor={a.isActive ? SELECTED : BUTTON_EDGE} paddingX={1}>
-      <Button key={`${a.id}-b`} plain label={a.label} onPress={a.onPress}>
+      <Button key={`${a.id}-b`} plain onPress={a.onPress}>
         <Text color={a.isActive ? WHITE : INK} weight={a.isActive ? 'bold' : undefined}>
           {a.label}
         </Text>
@@ -64,7 +64,7 @@ const closeBox = (ui: ReturnType<EngineInterface['ui']['resolve']>, id: string, 
   const { Box, Text, Button } = ui
   return (
     <Box key={id} backgroundColor={CLOSE_RED} borderStyle="round" borderColor={WHITE} paddingX={1}>
-      <Button key={`${id}-b`} plain label="Close" onPress={onPress}>
+      <Button key={`${id}-b`} plain onPress={onPress}>
         <Text color={WHITE} weight="bold">
           ✕
         </Text>
@@ -219,7 +219,6 @@ export const register: Register = on => {
         <Button
           key={key}
           plain
-          label={label}
           onPress={async () => {
             await update($, isStartOpen, () => false)
             await run()
@@ -255,7 +254,7 @@ export const register: Register = on => {
         <Box flexDirection="row" alignItems="center" gap="xs">
           {icon('spark')}
           <Box key="start-box" backgroundColor={START_GREEN} borderStyle="round" borderColor={isOpen ? WHITE : '#2b7a22'} paddingX={1}>
-            <Button key="start" plain label="start" onPress={() => update($, isStartOpen, v => !v)}>
+            <Button key="start" plain onPress={() => update($, isStartOpen, v => !v)}>
               <Text color={WHITE} weight="bold" italic>
                 {isOpen ? 'start ▾' : 'start'}
               </Text>
@@ -298,7 +297,6 @@ export const register: Register = on => {
       <Button
         key={key}
         plain
-        label={label}
         onPress={async press => {
           if (!keepOpen) await update($, monitorMenu, () => null)
           await run(press)
@@ -319,7 +317,7 @@ export const register: Register = on => {
           </Box>
           {closeBox(ui, 'mon-close', () => $.ui.close({ id: MONITOR }))}
         </Box>
-        <Box flexDirection="row" paddingX={1} gap={1} alignItems="center">
+        <Box flexDirection="row" paddingX={1} paddingY={1} gap={2} alignItems="center">
           {menuButton('file', 'File')}
           {menuButton('edit', 'Edit')}
           {menuButton('view', 'View')}
@@ -346,7 +344,7 @@ export const register: Register = on => {
           </Box>
         )}
         {view.bars && (
-        <Box flexDirection="column" margin={1} padding={1} backgroundColor={WHITE} borderStyle="single" borderColor={SHADOW}>
+        <Box flexDirection="column" margin={1} padding={1} gap={1} backgroundColor={WHITE} borderStyle="single" borderColor={SHADOW}>
           <Text color={INK} weight="bold">
             Tool usage
           </Text>
@@ -414,7 +412,7 @@ export const register: Register = on => {
       winButton(ui, { id: `tab-${key}`, label: label, isActive: t === key, onPress: () => update($, tab, () => key) })
     )
     const check = (key: string, label: string, value: boolean, patch: (v: boolean) => Partial<DeskSettings>) => (
-      <Button key={key} plain label={`${value ? '[x]' : '[ ]'} ${label}`} onPress={() => setDraft(patch(!value))}>
+      <Button key={key} plain onPress={() => setDraft(patch(!value))}>
         <Text color={INK}>{`${value ? '[x]' : '[ ]'} ${label}`}</Text>
       </Button>
     )
@@ -476,7 +474,7 @@ export const register: Register = on => {
           </Box>
           {closeBox(ui, 'dp-x', () => $.ui.close({ id: DISPLAY }))}
         </Box>
-        <Box flexDirection="row" paddingX={1} paddingTop={1} gap="xs">
+        <Box flexDirection="row" paddingX={1} paddingTop={1} gap={2}>
           {tabButton('background', 'Background')}
           {tabButton('appearance', 'Appearance')}
           {tabButton('effects', 'Effects')}
@@ -489,25 +487,25 @@ export const register: Register = on => {
           )}
           {body}
         </Box>
-        <Box flexDirection="row" justifyContent="flex-end" gap="xs" paddingX={1} paddingBottom={1}>
-          <Button
-            key="dp-ok"
-            label="OK"
-            variant="primary"
-            onPress={async () => {
+        <Box flexDirection="row" justifyContent="flex-end" gap={2} paddingX={1} paddingY={1}>
+          {winButton(ui, {
+            id: 'dp-ok',
+            label: 'OK',
+            isActive: true,
+            onPress: async () => {
               await commit($, d)
               await $.ui.close({ id: DISPLAY })
-            }}
-          />
-          <Button
-            key="dp-cancel"
-            label="Cancel"
-            onPress={async () => {
+            },
+          })}
+          {winButton(ui, {
+            id: 'dp-cancel',
+            label: 'Cancel',
+            onPress: async () => {
               await update($, draft, () => null)
               await $.ui.close({ id: DISPLAY })
-            }}
-          />
-          <Button key="dp-apply" label="Apply" dimColor={!isDirty} onPress={() => commit($, d)} />
+            },
+          })}
+          {winButton(ui, { id: 'dp-apply', label: isDirty ? 'Apply' : 'Apply (saved)', onPress: () => commit($, d) })}
         </Box>
       </Box>
     )

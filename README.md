@@ -16,7 +16,9 @@
 
 **ClaudeXP** is a mod that dresses Claude Code like an early-2000s desktop: a rolling green meadow behind the chat, desktop icons, a blue taskbar with a green `start` button and a blinking `Ready_`, rounded blue-framed windows with red close boxes, a start band above the prompt, a live **System Monitor** window and a proper **Display Properties** dialog.
 
-Everything is drawn by the mod itself: original pixel icons, an original meadow, no copied wallpapers.
+Everything is drawn by the mod itself: original icons, an original meadow, no copied wallpapers.
+
+Prefer the 1998 look? See its sibling, [Claude 98](https://github.com/weihaoc168/Claude98).
 
 [Install](#-install) · [Features](#-features) · [Commands](#-commands) · [Display Properties](#-display-properties) · [FAQ](#-faq)
 

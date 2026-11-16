@@ -59,7 +59,7 @@ Answer `y` to add the marketplace and pick the **user** scope, and every new ses
 | `/display` | Display Properties |
 | `/sysmon` | System Monitor |
 | `/startmenu` | The Start menu |
-| `/win98-check` | A self-check of the color schemes |
+| `/win98-check` | Which screens the session draws on, and whether the theme reached them |
 
 ## 🖼️ Display Properties
 

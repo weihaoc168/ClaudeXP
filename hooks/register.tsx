@@ -52,6 +52,9 @@ const winButton = (ui: ReturnType<EngineInterface['ui']['resolve']>, a: WinButto
   )
 }
 
+// Which surface last asked for the backdrop, for /win98-check.
+let lastBackdrop: string | undefined
+
 const sanitize = (raw: unknown): DeskSettings => {
   const v = (raw ?? {}) as Partial<DeskSettings>
   const schemes: DeskScheme[] = ['standard', 'rose', 'slate', 'eggplant']
@@ -103,7 +106,7 @@ export const register: Register = on => {
     await $.command.register({ name: 'display', description: 'Claude 98: open Display Properties (wallpaper, color scheme, effects)' })
     await $.command.register({ name: 'sysmon', description: 'Claude 98: open the System Monitor window' })
     await $.command.register({ name: 'startmenu', description: 'Claude 98: toggle the Start menu above the prompt' })
-    await $.command.register({ name: 'win98-check', description: 'Claude 98: list color contrast notes for every scheme' })
+    await $.command.register({ name: 'win98-check', description: 'Claude 98: show which screens this session draws on and whether the theme reached them' })
 
     if (stored.startup) {
       void openMonitor($)
@@ -128,9 +131,18 @@ export const register: Register = on => {
     return { text: 'Start menu toggled.' }
   })
 
-  on('command.run', { command: 'win98-check' }, async () => {
-    const lines = allProblems()
-    return { text: lines.length === 0 ? 'All schemes pass.' : lines.join('\n') }
+  on('command.run', { command: 'win98-check' }, async $ => {
+    const surfaces = await $.session.surfaces()
+    const s = await read($, settings)
+    const set = await $.theme.set(lookFor(s))
+    return {
+      text: [
+        `Screens attached: ${surfaces.length === 0 ? 'none' : surfaces.join(', ')}`,
+        `Theme: ${set.isDrawn ? 'accepted by an attached app' : `not drawn (${set.reason})`}`,
+        `Backdrop last drawn on: ${lastBackdrop ?? 'nothing yet this load'}`,
+        `Color contrast notes: ${allProblems().length}`,
+      ].join('\n'),
+    }
   })
 
   // ---------------- tool calls feed the System Monitor ----------------
@@ -161,6 +173,7 @@ export const register: Register = on => {
     }
     const { Svg } = ui
     const s = await read($, settings)
+    lastBackdrop = e.surface
     $.ui.status(`Claude 98 - Ready (${s.wallpaper}, scene drawn on ${e.surface})`)
     return <Svg source={sceneSvg(s)} alt="A retro desktop with pixel icons and a taskbar" isInteractive />
   })

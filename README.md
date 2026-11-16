@@ -61,6 +61,7 @@ Answer `y` to add the marketplace and pick the **user** scope, and every new ses
 | `/display` | Display Properties |
 | `/sysmon` | System Monitor |
 | `/startmenu` | The Start menu |
+| `/startband` | Shows or hides the Start band above the prompt |
 | `/xp-check` | Which screens the session draws on, and whether the theme reached them |
 
 ## 🖼️ Display Properties
@@ -69,7 +70,7 @@ Three tabs, OK / Cancel / Apply, just like you remember:
 
 - **Background**: Green Meadow, Teal, Navy, Olive, Black or Clouds, plus the meadow size.
 - **Appearance**: the color scheme, with an Active Window preview.
-- **Effects**: show or hide the desktop icons and the taskbar, and whether System Monitor opens at startup.
+- **Effects**: show or hide the desktop icons and the taskbar, whether System Monitor opens at startup, and whether the Start band shows above the prompt.
 
 ## ❓ FAQ
 

@@ -19,10 +19,10 @@ const DISPLAY = 'display-properties'
 const MONITOR = 'system-monitor'
 const STORE_KEY = 'settings-v2'
 
-const DEFAULTS: DeskSettings = { scheme: 'standard', wallpaper: 'meadow', zoom: '65', icons: true, taskbar: true, startup: true }
+const DEFAULTS: DeskSettings = { scheme: 'standard', wallpaper: 'meadow', zoom: '65', icons: true, taskbar: true, startup: true, band: true }
 
-const settings = atom({ plugin: 'claudexp', key: 'settings' } as const, DEFAULTS, { shape: 'settings-3' })
-const draft = atom({ plugin: 'claudexp', key: 'draft' } as const, null, { shape: 'draft-3' })
+const settings = atom({ plugin: 'claudexp', key: 'settings' } as const, DEFAULTS, { shape: 'settings-4' })
+const draft = atom({ plugin: 'claudexp', key: 'draft' } as const, null, { shape: 'draft-4' })
 const tab = atom({ plugin: 'claudexp', key: 'tab' } as const, 'background' as DeskTab)
 const calls = atom({ plugin: 'claudexp', key: 'calls' } as const, [], { shape: 'calls-1' })
 const isStartOpen = atom({ plugin: 'claudexp', key: 'isStartOpen' } as const, false)
@@ -82,6 +82,7 @@ const sanitize = (raw: unknown): DeskSettings => {
     icons: typeof v.icons === 'boolean' ? v.icons : DEFAULTS.icons,
     taskbar: typeof v.taskbar === 'boolean' ? v.taskbar : DEFAULTS.taskbar,
     startup: typeof v.startup === 'boolean' ? v.startup : DEFAULTS.startup,
+    band: typeof v.band === 'boolean' ? v.band : DEFAULTS.band,
   }
 }
 
@@ -121,6 +122,7 @@ export const register: Register = on => {
 
     await $.command.register({ name: 'display', description: 'ClaudeXP: open Display Properties (wallpaper, color scheme, effects)' })
     await $.command.register({ name: 'sysmon', description: 'ClaudeXP: open the System Monitor window' })
+    await $.command.register({ name: 'startband', description: 'ClaudeXP: show or hide the Start band above the prompt' })
     await $.command.register({ name: 'startmenu', description: 'ClaudeXP: toggle the Start menu above the prompt' })
     await $.command.register({ name: 'xp-check', description: 'ClaudeXP: show which screens this session draws on and whether the theme reached them' })
 
@@ -140,6 +142,12 @@ export const register: Register = on => {
   on('command.run', { command: 'sysmon' }, async $ => {
     await openMonitor($)
     return { text: 'System Monitor opened.' }
+  })
+
+  on('command.run', { command: 'startband' }, async $ => {
+    const s = await read($, settings)
+    await commit($, { ...s, band: !s.band })
+    return { text: s.band ? 'Start band hidden. Run /startband to show it again.' : 'Start band shown.' }
   })
 
   on('command.run', { command: 'startmenu' }, async $ => {
@@ -197,7 +205,7 @@ export const register: Register = on => {
   // ---------------- Start menu band above the prompt ----------------
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
-    if (e.props.hasSurvey) {
+    if (e.props.hasSurvey || !(await read($, settings)).band) {
       return next(e)
     }
     const ui = $.ui.resolve(e)
@@ -447,6 +455,7 @@ export const register: Register = on => {
           {check('fx-icons', 'Show desktop icons', d.icons, v => ({ icons: v }))}
           {check('fx-taskbar', 'Show taskbar', d.taskbar, v => ({ taskbar: v }))}
           {check('fx-startup', 'Open System Monitor at startup', d.startup, v => ({ startup: v }))}
+          {check('fx-band', 'Show Start band above the prompt', d.band, v => ({ band: v }))}
         </Box>
       )
 
